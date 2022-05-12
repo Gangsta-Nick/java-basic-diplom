@@ -32,9 +32,8 @@ public class TextGraphicsConverterImpl implements TextGraphicsConverter {
         int newWidth = 0;
         int newHeight = 0;
 
-        if (((localWidth > getWidth()) || (localHeight > getHeight())) || ((localWidth > getWidth()) && (localHeight > getHeight()))) { // хотя бы один или оба из текущих параметров больше заданных занчений
-            if (getWidth() != 300 || getHeight() != 300) {  // хотя бы 1 параметр задан, сценарий ИЛИ, пропорционально
-
+        if (((localWidth > getWidth()) || (localHeight > getHeight())) || ((localWidth > getWidth()) && (localHeight > getHeight()))) { 
+            if (getWidth() != 300 || getHeight() != 300) {
                 if (localWidth > localHeight) {
                     int temp = localWidth / getWidth();
                     newWidth = localWidth / temp;
@@ -44,8 +43,7 @@ public class TextGraphicsConverterImpl implements TextGraphicsConverter {
                     newWidth = localWidth / temp;
                     newHeight = localHeight / temp;
                 }
-
-            } else if (getWidth() != 300 && getHeight() != 300) { // оба параметра заданы, сценарий И
+            } else if (getWidth() != 300 && getHeight() != 300) {
                 if (localWidth > localHeight) {
                     int temp = localWidth / getWidth();
                     newWidth = localWidth / temp;
@@ -57,15 +55,12 @@ public class TextGraphicsConverterImpl implements TextGraphicsConverter {
                     int temp1 = localWidth / getWidth();
                     newWidth = localWidth / temp1;
                 }
-
             } else {  // не заданы оба
                 newWidth = getWidth();
                 newHeight = getHeight();
             }
-        } else { // (localWidth < getWidth()) && (localHeight < getHeight()) оба параметра текущей картинки меньше заданных параметров.
-
-            if (getWidth() != 300 || getHeight() != 300) {  // хотя бы 1 параметр задан, сценарий ИЛИ, пропорционально
-
+        } else {
+            if (getWidth() != 300 || getHeight() != 300) {
                 if (localWidth > localHeight) {
                     int temp = getWidth() / localWidth;
                     newWidth = localWidth * temp;
@@ -75,7 +70,6 @@ public class TextGraphicsConverterImpl implements TextGraphicsConverter {
                     newWidth = localWidth * temp;
                     newHeight = localHeight * temp;
                 }
-
             } else if (getWidth() != 300 && getHeight() != 300) { // оба параметра заданы, сценарий И
                 if (localWidth > localHeight) {
                     int temp = getWidth() / localWidth;
@@ -88,33 +82,22 @@ public class TextGraphicsConverterImpl implements TextGraphicsConverter {
                     int temp1 = getWidth() / localWidth;
                     newWidth = localWidth * temp1;
                 }
-
             }
-
         }
-
         Image scaledImage = img.getScaledInstance(newWidth, newHeight, BufferedImage.SCALE_SMOOTH);
-
         BufferedImage bwImg = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_BYTE_GRAY);
-
         Graphics2D graphics = bwImg.createGraphics();
-
         graphics.drawImage(scaledImage, 0, 0, null);
-
         WritableRaster bwRaster = bwImg.getRaster();
-
         StringBuilder sb1 = new StringBuilder();
         char[][] arrayChar = new char[newHeight][newWidth];
-
         char c = (char) 0;
         String result = null;
-
         sb1.append("<div style=\"white-space: nowrap;\">");
         for (int i = 0; i < arrayChar.length; i++) {
             for (int j = 0; j < arrayChar[i].length; j++) {
                 int color = bwRaster.getPixel(j, i, new int[3])[0];
                 c = schema.convert(color);
-
                 sb1
                         .append(c)
                         .append(c);
@@ -128,9 +111,6 @@ public class TextGraphicsConverterImpl implements TextGraphicsConverter {
         return result;
 
     }
-
-
-
 
     public void setMaxWidth(int width) {
         this.width = width;
